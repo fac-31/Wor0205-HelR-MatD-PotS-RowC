@@ -1,4 +1,3 @@
-
 // Toggle hidden information
 const toggleButton = document.getElementById('btn-toggle1');
 const hiddenInfo = document.querySelector('.hidden-info');
@@ -6,6 +5,14 @@ const hiddenInfo = document.querySelector('.hidden-info');
 toggleButton.addEventListener('click', () => {
     hiddenInfo.classList.toggle('hidden-info');
 });
+
+
+//Change header 
+document.querySelector("header h1").textContent = "Clickspire";
+
+// Change primary color
+document.documentElement.style.setProperty("--primary-color", "#023e8a");
+
 
 //interactive spinning button
 const colorButton = document.getElementById('btn-change-color');
@@ -17,6 +24,82 @@ setTimeout(() => {
     colorButton.style.animation = "";
 }, 500);
 });
+
+// Form submission handling
+const form = document.getElementById('feedback-form');
+const formResponse = document.querySelector('#section1 p');
+
+let name = "";
+const formSection = document.getElementById("section3")
+
+let overlay = document.createElement("div");
+overlay.id = "overlay";
+
+document.addEventListener("DOMContentLoaded", function(){
+   
+
+    formSection.style.position = "fixed";
+    formSection.style.top = "40%";
+    formSection.style.left = "50%";
+    formSection.style.transform = "translate(-50%, -50%)";
+    formSection.style.background = "white";
+    formSection.style.padding = "30px 40px 30px 20px";
+    formSection.style.border = "2px solid black";
+    formSection.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.3)";
+    formSection.style.zIndex = "1000";
+    formSection.style.display = "block";
+
+
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.background = "rgba(0, 0, 0, 0.5)";
+    overlay.style.zIndex = "999"; 
+    document.body.appendChild(overlay);
+})
+
+let errorMessage = document.createElement('p')
+errorMessage.style.color = 'red'
+errorMessage.style.fontSize = "14px"
+errorMessage.style.marginTop = "10px"
+form.appendChild(errorMessage)
+
+
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+  
+    overlay.style.display = "none"
+    const formName = document.getElementById('name').value.trim();
+   
+    const feedback = document.getElementById('feedback').value.trim();
+    if (formName === "" || feedback === "") {
+        errorMessage.textContent = "Please fill out all fields before submitting.";
+        return; 
+    }
+
+      formSection.style.display = "none"
+    
+    name = formName;
+    if (name) {
+        const section1Heading = document.querySelector("#section1 h2");
+        section1Heading.textContent = `Welcome, ${name}`;
+    }
+    formResponse.textContent = `Thank you, ${name}, for your feedback: "${feedback}"`;
+  
+
+   
+    form.reset();
+    errorMessage.textContent = ""
+});
+
+// Personalised greeting
+
+
+
+  
 
 //button text size
 if (colorButton) {
@@ -89,33 +172,15 @@ function zenQuote(doAnimate = true) {
 
 // Pre-load the image, don't visually show it
 zenQuote(false);
+        
 
-// Form submission handling
-const form = document.getElementById('feedback-form');
 
-const formResponse = document.getElementById('form-response');
 
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const name = document.getElementById('name').value;
-    const feedback = document.getElementById('feedback').value;
-    formResponse.textContent = `Thank you, ${name}, for your feedback: "${feedback}"`;
-    form.reset();
-});
 
-// Personalised greeting
-if (name) {
-    const section1Heading = document.querySelector("#section1 h2");
-    section1Heading.textContent = `Welcome, ${name}`;
-}
 
-//Form 
-/* Anna V - I believe these few lines need to go above formResponse (line45). 
- Let me know if that works for you/ feel free to add */ 
-if (name) {
-    const section1heading = document.querySelector("#section1 h2")
-    section1heading.textContent = 'Welcome, $nameInput'
-}
+
+
+
 
 
 /* PROMPTS FOR ADDITIONAL INTERACTIONS
