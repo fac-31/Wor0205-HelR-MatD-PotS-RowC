@@ -10,9 +10,20 @@ app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/public/index.html');
 });
 
-// Define a route for the home page
-app.get('/about', (req, res) => {
-	res.sendFile(__dirname + '/about/index.html');
+app.get('/:page',(req, res, next) => {
+    res.sendFile(__dirname + `/${req.params.page}/index.html`, {}, (err) => {
+        if (err) {
+            console.log(err);
+            console.log("bong");
+            next();
+        } else {
+            console.log("page found");
+        }
+    });
+});
+
+app.get('/*',(req, res, next) => {
+    res.sendFile(__dirname + '/not_found/error.html');
 });
 
 // Start the server
