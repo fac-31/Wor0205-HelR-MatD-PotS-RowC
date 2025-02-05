@@ -10,6 +10,11 @@ app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/public/index.html');
 });
 
+// Define a route for the home page
+app.get('/about', (req, res) => {
+	res.sendFile(__dirname + '/about/index.html');
+});
+
 // Start the server
 app.listen(PORT, () => {
 	console.log(`Server is running on http://localhost:${PORT}`);
