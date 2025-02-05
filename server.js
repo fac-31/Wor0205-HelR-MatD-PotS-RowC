@@ -3,6 +3,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Serve static files from the "public" directory
+<<<<<<< HEAD
 app.use(express.static('public'));
 
 // Define a route for the home page
@@ -42,6 +43,11 @@ app.get('/:page',(req, res, next) => {
 app.get('/*',(req, res, next) => {
     res.sendFile(__dirname + '/not_found/error.html');
 });
+=======
+app.use(express.static('public'));  // This auto-adds public/index.html to the "/" page
+app.use(require("./server/page.js"));
+app.use(require("./server/error.js"));
+>>>>>>> main
 
 
 
