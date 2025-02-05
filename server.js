@@ -2,27 +2,10 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Require all files in server dir for paths
-require('./server/')(app, __dirname);
-
 // Serve static files from the "public" directory
-app.use(express.static('public'));
-
-app.get('/:page',(req, res, next) => {
-    res.sendFile(__dirname + `/${req.params.page}/index.html`, {}, (err) => {
-        if (err) {
-            console.log(err);
-            console.log("bong");
-            next();
-        } else {
-            console.log("page found");
-        }
-    });
-});
-
-app.get('/*',(req, res, next) => {
-    res.sendFile(__dirname + '/not_found/error.html');
-});
+app.use(express.static('public'));  // This auto-adds public/index.html to the "/" page
+app.use(require("./server/page.js"));
+app.use(require("./server/error.js"));
 
 // Start the server
 app.listen(PORT, () => {
