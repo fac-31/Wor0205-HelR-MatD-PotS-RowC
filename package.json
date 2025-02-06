@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/fac-31/Wor0205-HelR-MatD-PotS-RowC#readme",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.21.2"
   }
 }
