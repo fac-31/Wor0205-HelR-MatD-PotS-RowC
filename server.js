@@ -1,5 +1,6 @@
-const express = require('express');
-require('dotenv').config();
+import express from 'express';
+import { extract } from '@extractus/article-extractor'
+import "dotenv/config.js"
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodie
 const PORT = process.env.PORT || 3000;
@@ -51,10 +52,16 @@ app.use(express.static('public'));  // This auto-adds public/index.html to the "
 
     // THIS IS WHAT WE WANT
     const url = resultsFromG.response.results[0].webUrl;
-    console.log(resultsFromG.response.results[0].webUrl);
+    //console.log(resultsFromG.response.results[0].webUrl);
 
-    let input = await fetch('https://us-central1-technews-251304.cloudfunctions.net/article-parser?url=' + url);
-    let article = await input.json()['data']['content'];
+    try {
+        const article = await extract(url)
+        console.log(article.content)
+      } catch (err) {
+        console.error(err)
+      }
+
+    //console.log(article);
 
     
 
