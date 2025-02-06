@@ -35,7 +35,7 @@ const formSection = document.getElementById("section3")
 let overlay = document.createElement("div");
 overlay.id = "overlay";
 
-document.addEventListener("DOMContentLoaded", function(){
+/*document.addEventListener("DOMContentLoaded", function(){
    
 
     formSection.style.position = "fixed";
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function(){
     overlay.style.background = "rgba(0, 0, 0, 0.5)";
     overlay.style.zIndex = "999"; 
     document.body.appendChild(overlay);
-})
+})*/
 
 let errorMessage = document.createElement('p')
 errorMessage.style.color = 'red'
@@ -68,35 +68,75 @@ form.appendChild(errorMessage)
 
 
 
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
+// form.addEventListener('submit', (event) => {
+//     event.preventDefault();
   
-    overlay.style.display = "none"
-    const formName = document.getElementById('name').value.trim();
+//     overlay.style.display = "none"
+//     const formName = document.getElementById('name').value.trim();
    
-    const feedback = document.getElementById('feedback').value.trim();
-    if (formName === "" || feedback === "") {
-        errorMessage.textContent = "Please fill out all fields before submitting.";
-        return; 
-    }
+//     const feedback = document.getElementById('feedback').value.trim();
+//     if (formName === "" || feedback === "") {
+//         errorMessage.textContent = "Please fill out all fields before submitting.";
+//         return; 
+//     }
 
-      formSection.style.display = "none"
+//       formSection.style.display = "none"
     
-    name = formName;
-    if (name) {
-        const section1Heading = document.querySelector("#section1 h2");
-        section1Heading.textContent = `Welcome, ${name}`;
-    }
-    formResponse.textContent = `Thank you, ${name}, for your feedback: "${feedback}"`;
+//     name = formName;
+//     if (name) {
+//         const section1Heading = document.querySelector("#section1 h2");
+//         section1Heading.textContent = `Welcome, ${name}`;
+//     }
+//     formResponse.textContent = `Thank you, ${name}, for your feedback: "${feedback}"`;
   
 
    
-    form.reset();
-    errorMessage.textContent = ""
-});
+//     form.reset();
+//     errorMessage.textContent = ""
+// });
+
+
 
 // Personalised greeting
+document.getElementById('APISForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent page reload
+    
+    const topic = document.getElementById('topicInput').value;
+console.log("before looking at topic");
+console.log(topic);
+    // Convert the object to a JSON string
+    const jsonString = JSON.stringify({ "topic": topic});
+    console.log(`Topic is ${jsonString}`);
 
+    // // Send the JSON string to the server
+    const response = await fetch('http://localhost:3000/API1', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: jsonString // Send the JSON string directly
+    });
+
+    console.log("boom");
+
+    const imgElement = document.getElementById('imageElement')
+    // //if it's an image
+    // if (response.ok) {
+    //     console.log(response);
+    //     let blob  = response.blob;
+    //     //const blob = await response.blob();
+    //     console.log(blob); // Convert response to binary
+    //     const imageUrl = URL.createObjectURL(blob); // Create a URL for the image
+    //     imgElement.style.display = 'block'; // Show image once loaded
+    //     imgElement.src = imageUrl; // Display it in an <img> tag
+    // }
+
+    // //if it's a URL
+    if (response.ok) {
+        const data = response;
+        console.log(data); // Parse JSON response
+        imgElement.src = data.imageUrl; // Use URL in an <img> tag
+        imgElement.style.display = 'block'; // Show image once loaded
+    }
+});
 
 
   

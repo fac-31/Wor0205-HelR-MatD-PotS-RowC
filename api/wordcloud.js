@@ -14,7 +14,13 @@ export async function getWordCloud(path,input) {
             "text": input})
         }
     )
+
+    console.log("blob")
     const blob = await res.blob();
     console.log(blob);
+
     return blob;
+    // const blob = await res.blob();
+    // console.log(blob);
+    // return blob;
 }
