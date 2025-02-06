@@ -1,6 +1,7 @@
 import express from 'express';
 import { extract } from '@extractus/article-extractor'
 import "dotenv/config.js"
+import { getWordCloud } from "./api/wordcloud.js"
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodie
 const PORT = process.env.PORT || 3000;
@@ -51,12 +52,12 @@ app.use(express.static('public'));  // This auto-adds public/index.html to the "
     let resultsFromG = await responseFromGuardian.json();
 
     // THIS IS WHAT WE WANT
+    let article;
     const url = resultsFromG.response.results[0].webUrl;
     //console.log(resultsFromG.response.results[0].webUrl);
 
     try {
-        const article = await extract(url)
-        console.log(article.content)
+        article = await extract(url)
       } catch (err) {
         console.error(err)
       }
@@ -67,6 +68,13 @@ app.use(express.static('public'));  // This auto-adds public/index.html to the "
 
     //API2 goes here.
     //use the output of API1
+    const path = 'https://quickchart.io/wordcloud';
+    const cloudResponse = await getWordCloud(path,article);
+    //console.log(URL.createObjectURL(blob));
+    const cloudUrl = URL.createObjectURL(cloudResponse);
+    //console.log(URL.createObjectURL(blob))
+    res.send(cloudUrl)
+
 
 
 

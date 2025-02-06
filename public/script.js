@@ -117,21 +117,25 @@ console.log(topic);
 
     console.log("boom");
 
-    // const imgElement = document.getElementById('wordCountImage')
+    const imgElement = document.getElementById('imageElement')
     // //if it's an image
     // if (response.ok) {
-    //     const blob = await response.blob(); // Convert response to binary
+    //     console.log(response);
+    //     let blob  = response.blob;
+    //     //const blob = await response.blob();
+    //     console.log(blob); // Convert response to binary
     //     const imageUrl = URL.createObjectURL(blob); // Create a URL for the image
-    //     imgElement.src = imageUrl; // Display it in an <img> tag
     //     imgElement.style.display = 'block'; // Show image once loaded
+    //     imgElement.src = imageUrl; // Display it in an <img> tag
     // }
 
     // //if it's a URL
-    // if (response.ok) {
-    //     const data = await response.json(); // Parse JSON response
-    //     imgElement.src = data.imageUrl; // Use URL in an <img> tag
-    //     imgElement.style.display = 'block'; // Show image once loaded
-    // }
+    if (response.ok) {
+        const data = response;
+        console.log(data); // Parse JSON response
+        imgElement.src = data.imageUrl; // Use URL in an <img> tag
+        imgElement.style.display = 'block'; // Show image once loaded
+    }
 });
 
 
