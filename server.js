@@ -27,20 +27,20 @@ app.use(express.static('public'));  // This auto-adds public/index.html to the "
 //app.use(require("./server/error.js"));
 
  app.post('/API1', async (req, res) => {
-    console.log(res);
+    //console.log(res);
     const jsonObject = req.body;  // Access fields directly after parsing the JSON body
 
-    console.log(typeof(jsonObject));
+    //console.log(typeof(jsonObject));
 
 
-    console.log(`requested receive with Topic ${jsonObject}`);
+    //console.log(`requested receive with Topic ${jsonObject}`);
     //API1 goes here.
     //use the parameter topic
 
     let str = jsonObject["topic"];
     let httpStrToGuardian = "https://content.guardianapis.com/search?q=" + str + "&from-date=2014-01-01&api-key=" + process.env.GUARDIAN_API_KEY;
 
-    console.log(httpStrToGuardian);
+    //console.log(httpStrToGuardian);
     const responseFromGuardian = await fetch(httpStrToGuardian);
 
     let urlForAPi2 = responseFromGuardian;
@@ -48,7 +48,15 @@ app.use(express.static('public'));  // This auto-adds public/index.html to the "
 
 
     let resultsFromG = await responseFromGuardian.json();
+
+    // THIS IS WHAT WE WANT
+    const url = resultsFromG.response.results[0].webUrl;
     console.log(resultsFromG.response.results[0].webUrl);
+
+    let input = await fetch('https://us-central1-technews-251304.cloudfunctions.net/article-parser?url=' + url);
+    let article = await input.json()['data']['content'];
+
+    
 
     //API2 goes here.
     //use the output of API1
