@@ -6,33 +6,22 @@ const app = express();
 app.use(express.json()); // Middleware to parse JSON bodie
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static('public'));
 
-let input = 'Hello my name name name is is john and I have hello seven words words words words words words to say';
+function function1(id, reps)
+{
+    let concat = "";
+    for(let i = 0;i<reps;i++)
+    {
+        concat+= "<h1> " + id + "</h1>";
+    }
+    return concat;
+}
 
-const path = 'https://quickchart.io/wordcloud';
+app.get(`/function1/:id/:reps`, (req, res) => {
 
-app.get('/wordcloud', async (req,res) => {
-    const blob = await getWordCloud(path,input);
-    console.log(blob);
-    res.send(URL.createObjectURL(blob))
+    var concat = function1(req.params.id,req.params.reps );
+    res.send(concat);
 })
-
-// function function1(id, reps)
-// {
-//     let concat = "";
-//     for(let i = 0;i<reps;i++)
-//     {
-//         concat+= "<h1> " + id + "</h1>";
-//     }
-//     return concat;
-// }
-
-// app.get(`/function1/:id/:reps`, (req, res) => {
-
-//     var concat = function1(req.params.id,req.params.reps );
-//     res.send(concat);
-// })
 
 // Serve static files from the "public" directory
 app.use(express.static('public'));  // This auto-adds public/index.html to the "/" page
