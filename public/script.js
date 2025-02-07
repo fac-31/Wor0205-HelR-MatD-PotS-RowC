@@ -102,22 +102,28 @@ document.getElementById('APISForm').addEventListener('submit', async function(ev
     event.preventDefault(); // Prevent page reload
     
     const topic = document.getElementById('topicInput').value;
-console.log("before looking at topic");
-console.log(topic);
     // Convert the object to a JSON string
     const jsonString = JSON.stringify({ "topic": topic});
-    console.log(`Topic is ${jsonString}`);
 
     // // Send the JSON string to the server
-    const response = await fetch('http://localhost:3000/API1', {
+    fetch('http://localhost:3000/API1', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: jsonString // Send the JSON string directly
-    });
+    })
+        .then((res) => res.blob())
+        .then((blob) => {
+            const imageUrl = URL.createObjectURL(blob);
+            const imageElement = document.createElement("img");
+            console.log(imageUrl)
+            //const imgElement = document.getElementById('imageElement')
+            //imgElement.style.display = 'block';
+            //imgElement.src = imageUrl;
+            imageElement.src = imageUrl;
+            const section4 = document.getElementById("section4")
+            section4.appendChild(imageElement)
+        })
 
-    console.log("boom");
-
-    const imgElement = document.getElementById('imageElement')
     // //if it's an image
     // if (response.ok) {
     //     console.log(response);
@@ -130,12 +136,18 @@ console.log(topic);
     // }
 
     // //if it's a URL
-    if (response.ok) {
-        const data = response;
-        console.log(data); // Parse JSON response
-        imgElement.src = data.imageUrl; // Use URL in an <img> tag
-        imgElement.style.display = 'block'; // Show image once loaded
-    }
+    // if (response.ok) {
+    //     const data = await response.text();
+    //     console.log(data)
+    //     //const element = await data.text();
+    //     //console.log(await data.text());
+
+    //     //const section4 = document.getElementById("section4")
+    //     //section4.innerHTML += element;
+    //     imgElement.src = data; // Use URL in an <img> tag
+    //     imgElement.style.display = 'block'; // Show image once loaded
+    // }
+
 });
 
 

@@ -42,11 +42,10 @@ app.use(express.static('public'));  // This auto-adds public/index.html to the "
     let str = jsonObject["topic"];
     let httpStrToGuardian = "https://content.guardianapis.com/search?q=" + str + "&from-date=2014-01-01&api-key=" + process.env.GUARDIAN_API_KEY;
 
-    //console.log(httpStrToGuardian);
+    
     const responseFromGuardian = await fetch(httpStrToGuardian);
 
-    let urlForAPi2 = responseFromGuardian;
-    //console.log(urlForAPi2);
+    //let urlForAPi2 = responseFromGuardian;
 
 
     let resultsFromG = await responseFromGuardian.json();
@@ -54,26 +53,22 @@ app.use(express.static('public'));  // This auto-adds public/index.html to the "
     // THIS IS WHAT WE WANT
     let article;
     const url = resultsFromG.response.results[0].webUrl;
-    //console.log(resultsFromG.response.results[0].webUrl);
 
     try {
         article = await extract(url)
-      } catch (err) {
+        const path = 'https://quickchart.io/wordcloud';
+        const cloud =  await getWordCloud(path,article);
+        res.send(cloud);
+    } catch (err) {
         console.error(err)
-      }
+    }
 
-    //console.log(article);
 
     
 
     //API2 goes here.
     //use the output of API1
-    const path = 'https://quickchart.io/wordcloud';
-    const cloudResponse = await getWordCloud(path,article);
-    //console.log(URL.createObjectURL(blob));
-    const cloudUrl = URL.createObjectURL(cloudResponse);
-    //console.log(URL.createObjectURL(blob))
-    res.send(cloudUrl)
+    
 
 
 

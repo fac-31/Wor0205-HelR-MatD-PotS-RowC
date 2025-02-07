@@ -1,5 +1,5 @@
 export async function getWordCloud(path,input) {
-    const res = await fetch(path, {
+    return await fetch(path, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -14,12 +14,9 @@ export async function getWordCloud(path,input) {
             "text": input})
         }
     )
+    //console.log(blob)
 
-    console.log("blob")
-    const blob = await res.blob();
-    console.log(blob);
-
-    return blob;
+     res;
     // const blob = await res.blob();
     // console.log(blob);
     // return blob;
