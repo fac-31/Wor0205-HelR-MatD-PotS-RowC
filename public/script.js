@@ -105,40 +105,58 @@ document.getElementById('APISForm').addEventListener('submit', async function(ev
     // Convert the object to a JSON string
     const jsonString = JSON.stringify({ "topic": topic});
 
-    let wordCloudInput;
-
     // // Send the JSON string to the server
     await fetch('http://localhost:3000/API1', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: jsonString // Send the JSON string directly
     })
-        .then((res) => res.json())
-        .then(async (json) => {
-            console.log(json.text);
-            wordCloudInput = json.text;
-            //const imageUrl = URL.createObjectURL(blob);
-            //const imageElement = document.createElement("img");
-            // console.log(imageUrl)
-            // const imgElement = document.getElementById('imageElement')
-            // imgElement.style.display = 'block';
-            // imgElement.src = imageUrl;
-            //imageElement.src = imageUrl;
-            //const section4 = document.getElementById("section4")
-            //section4.appendChild(imageElement)
+        .then(async (res) => {
+            const imgElement = document.getElementById('imageElement')
+            const contentType = res.headers.get('Content-Type');
+            if (!contentType || !contentType.includes('image/png')) {
+                throw new Error('The server did not return a PNG image');
+            }
+
+            console.log("about to enter image");
+            const buffer = await res.arrayBuffer();
+            console.log('Received ArrayBuffer:', buffer);
+
+            const blob = new Blob([buffer], { type: 'image/png' });
+            console.log('Created Blob:', blob);
+            const url = URL.createObjectURL(blob);
+            console.log('Blob URL:', url);
+
+            imgElement.src = url;  // Prefix with appropriate mime type
+            imgElement.style.display = 'block'; // Show image once loaded
         })
 
-    const jsonStringTwo = JSON.stringify({ 'text' : wordCloudInput })
+    // const jsonStringTwo = JSON.stringify({ 'text' : wordCloudInput })
     
-    await fetch('http://localhost:3000/API2', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: jsonStringTwo
-    })
-        .then(async (res) => {
-            const jj = await res.json();
-            console.log(jj.blob);
-        })
+    // await fetch('http://localhost:3000/API2', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: jsonStringTwo
+    // })
+    //     .then(async (res) => {
+    //         const imgElement = document.getElementById('imageElement')
+    //         const contentType = res.headers.get('Content-Type');
+    //         if (!contentType || !contentType.includes('image/png')) {
+    //             throw new Error('The server did not return a PNG image');
+    //         }
+
+    //         console.log("about to enter image");
+    //         const buffer = await res.arrayBuffer();
+    //         console.log('Received ArrayBuffer:', buffer);
+
+    //         const blob = new Blob([buffer], { type: 'image/png' });
+    //         console.log('Created Blob:', blob);
+    //         const url = URL.createObjectURL(blob);
+    //         console.log('Blob URL:', url);
+
+    //         imgElement.src = url;  // Prefix with appropriate mime type
+    //         imgElement.style.display = 'block'; // Show image once loaded
+    //     })
 
     // //if it's an image
     // if (response.ok) {

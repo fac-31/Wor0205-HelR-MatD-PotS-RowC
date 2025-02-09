@@ -60,10 +60,16 @@ app.post('/API1', async (req, res) => {
     const url = resultsFromG.response.results[0].webUrl;
 
     try {
-        article = await extract(url)
+        const articleWithTags = await extract(url)
+        //console.log(article.content);
+        const regex = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g
+        const article = articleWithTags.content.replace(regex,'')
         const path = 'https://quickchart.io/wordcloud';
-        //const cloud =  await getWordCloud(path,article);
-        res.json({text:article.content});
+        const cloud =  await getWordCloud(path,article);
+        const imgBuffer = await cloud.arrayBuffer();
+        const cloudBlob = Buffer.from(imgBuffer);
+        res.set('Content-Type', 'image/png');
+        res.send(cloudBlob);
     } catch (err) {
         console.error(err)
     }
@@ -92,9 +98,11 @@ app.post('/API2', async (req,res) => {
     console.log(input);
     const path = 'https://quickchart.io/wordcloud';
     const cloud =  await getWordCloud(path,input);
-    const cloudBlob = await cloud.text();
+    const imgBuffer = await cloud.arrayBuffer();
+    const blob = Buffer.from(imgBuffer);
 
-    res.json({blob : cloudBlob});
+    res.set('Content-Type', 'image/png');
+    res.send(cloudBlob);
 })
 
 // Start the server

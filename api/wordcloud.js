@@ -11,6 +11,7 @@ export async function getWordCloud(path,input) {
             "fontFamily": "sans-serif",
             "fontScale": 15,
             "scale": "linear",
+            "removeStopwords": true,
             "text": input})
         }
     )
