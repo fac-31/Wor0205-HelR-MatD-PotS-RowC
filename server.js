@@ -2,6 +2,7 @@ import express from 'express';
 import { extract } from '@extractus/article-extractor'
 import "dotenv/config.js"
 import { getWordCloud } from "./api/wordcloud.js"
+const __dirname = import.meta.dirname;
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodie
 const PORT = process.env.PORT || 3000;
@@ -23,12 +24,16 @@ app.get(`/function1/:id/:reps`, (req, res) => {
     res.send(concat);
 })
 
+app.use(express.static(__dirname, { // host the whole directory
+    extensions: ["html", "htm", "gif", "png"],
+}))
+
 // Serve static files from the "public" directory
 app.use(express.static('public'));  // This auto-adds public/index.html to the "/" page
 //app.use(require("./server/page.js"));
 //app.use(require("./server/error.js"));
 
- app.post('/API1', async (req, res) => {
+app.post('/API1', async (req, res) => {
     //console.log(res);
     const jsonObject = req.body;  // Access fields directly after parsing the JSON body
 
@@ -57,8 +62,8 @@ app.use(express.static('public'));  // This auto-adds public/index.html to the "
     try {
         article = await extract(url)
         const path = 'https://quickchart.io/wordcloud';
-        const cloud =  await getWordCloud(path,article);
-        res.send(cloud);
+        //const cloud =  await getWordCloud(path,article);
+        res.json({text:article.content});
     } catch (err) {
         console.error(err)
     }
@@ -79,6 +84,18 @@ app.use(express.static('public'));  // This auto-adds public/index.html to the "
     // Return a confirmation message with the list of all people
     //res.json({ message: `Topic ${topic}` });
 });
+
+app.post('/API2', async (req,res) => {
+    const jsonObject = req.body;  // Access fields directly after parsing the JSON body
+
+    let input = jsonObject["text"];
+    console.log(input);
+    const path = 'https://quickchart.io/wordcloud';
+    const cloud =  await getWordCloud(path,input);
+    const cloudBlob = await cloud.text();
+
+    res.json({blob : cloudBlob});
+})
 
 // Start the server
 app.listen(PORT, () => {

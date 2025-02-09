@@ -8,15 +8,14 @@ fetch(path, {
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-        "format": "svg",
+        "format": "png",
         "width": 1000,
         "height": 1000,
         "fontFamily": "sans-serif",
         "fontScale": 15,
         "scale": "linear",
         "text": input})
-    }
-)
+    })
     .then((res) => res.blob())
     .then((blob) => {
         const imageUrl = URL.createObjectURL(blob);

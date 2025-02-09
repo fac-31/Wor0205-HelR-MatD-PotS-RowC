@@ -5,7 +5,7 @@ export async function getWordCloud(path,input) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            "format": "svg",
+            "format": "png",
             "width": 1000,
             "height": 1000,
             "fontFamily": "sans-serif",
@@ -14,10 +14,6 @@ export async function getWordCloud(path,input) {
             "text": input})
         }
     )
-    //console.log(blob)
-
-     res;
-    // const blob = await res.blob();
     // console.log(blob);
     // return blob;
 }

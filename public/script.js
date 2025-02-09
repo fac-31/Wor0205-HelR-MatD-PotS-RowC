@@ -105,23 +105,39 @@ document.getElementById('APISForm').addEventListener('submit', async function(ev
     // Convert the object to a JSON string
     const jsonString = JSON.stringify({ "topic": topic});
 
+    let wordCloudInput;
+
     // // Send the JSON string to the server
-    fetch('http://localhost:3000/API1', {
+    await fetch('http://localhost:3000/API1', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: jsonString // Send the JSON string directly
     })
-        .then((res) => res.blob())
-        .then((blob) => {
-            const imageUrl = URL.createObjectURL(blob);
-            const imageElement = document.createElement("img");
-            console.log(imageUrl)
-            //const imgElement = document.getElementById('imageElement')
-            //imgElement.style.display = 'block';
-            //imgElement.src = imageUrl;
-            imageElement.src = imageUrl;
-            const section4 = document.getElementById("section4")
-            section4.appendChild(imageElement)
+        .then((res) => res.json())
+        .then(async (json) => {
+            console.log(json.text);
+            wordCloudInput = json.text;
+            //const imageUrl = URL.createObjectURL(blob);
+            //const imageElement = document.createElement("img");
+            // console.log(imageUrl)
+            // const imgElement = document.getElementById('imageElement')
+            // imgElement.style.display = 'block';
+            // imgElement.src = imageUrl;
+            //imageElement.src = imageUrl;
+            //const section4 = document.getElementById("section4")
+            //section4.appendChild(imageElement)
+        })
+
+    const jsonStringTwo = JSON.stringify({ 'text' : wordCloudInput })
+    
+    await fetch('http://localhost:3000/API2', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: jsonStringTwo
+    })
+        .then(async (res) => {
+            const jj = await res.json();
+            console.log(jj.blob);
         })
 
     // //if it's an image
