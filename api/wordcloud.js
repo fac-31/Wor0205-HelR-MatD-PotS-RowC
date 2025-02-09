@@ -1,13 +1,13 @@
 export async function getWordCloud(path,input) {
-    return await fetch(path, {
+    const response = await fetch(path, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             "format": "png",
-            "width": 1000,
-            "height": 1000,
+            "width": 500,
+            "height": 500,
             "fontFamily": "sans-serif",
             "fontScale": 15,
             "scale": "linear",
@@ -15,6 +15,7 @@ export async function getWordCloud(path,input) {
             "text": input})
         }
     )
-    // console.log(blob);
-    // return blob;
+    
+    const imgBuffer = await response.arrayBuffer();
+    return Buffer.from(imgBuffer);
 }

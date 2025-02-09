@@ -103,85 +103,32 @@ document.getElementById('APISForm').addEventListener('submit', async function(ev
     
     const topic = document.getElementById('topicInput').value;
     // Convert the object to a JSON string
-    const jsonString = JSON.stringify({ "topic": topic});
+    const jsonString = JSON.stringify({"topic": topic});
 
     // // Send the JSON string to the server
-    await fetch('http://localhost:3000/API1', {
+    await fetch('/API1', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: jsonString // Send the JSON string directly
     })
         .then(async (res) => {
             const imgElement = document.getElementById('imageElement')
+
+            // Checks to see if response is of the correct MIME type - PNG
             const contentType = res.headers.get('Content-Type');
             if (!contentType || !contentType.includes('image/png')) {
                 throw new Error('The server did not return a PNG image');
             }
 
-            console.log("about to enter image");
+            // Creates a blob from the response buffer
+            //   Gets the url for the blob
             const buffer = await res.arrayBuffer();
-            console.log('Received ArrayBuffer:', buffer);
-
             const blob = new Blob([buffer], { type: 'image/png' });
-            console.log('Created Blob:', blob);
             const url = URL.createObjectURL(blob);
-            console.log('Blob URL:', url);
 
-            imgElement.src = url;  // Prefix with appropriate mime type
+            imgElement.src = url;  // Prefix with appropriate MIME type
             imgElement.style.display = 'block'; // Show image once loaded
         })
-
-    // const jsonStringTwo = JSON.stringify({ 'text' : wordCloudInput })
-    
-    // await fetch('http://localhost:3000/API2', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: jsonStringTwo
-    // })
-    //     .then(async (res) => {
-    //         const imgElement = document.getElementById('imageElement')
-    //         const contentType = res.headers.get('Content-Type');
-    //         if (!contentType || !contentType.includes('image/png')) {
-    //             throw new Error('The server did not return a PNG image');
-    //         }
-
-    //         console.log("about to enter image");
-    //         const buffer = await res.arrayBuffer();
-    //         console.log('Received ArrayBuffer:', buffer);
-
-    //         const blob = new Blob([buffer], { type: 'image/png' });
-    //         console.log('Created Blob:', blob);
-    //         const url = URL.createObjectURL(blob);
-    //         console.log('Blob URL:', url);
-
-    //         imgElement.src = url;  // Prefix with appropriate mime type
-    //         imgElement.style.display = 'block'; // Show image once loaded
-    //     })
-
-    // //if it's an image
-    // if (response.ok) {
-    //     console.log(response);
-    //     let blob  = response.blob;
-    //     //const blob = await response.blob();
-    //     console.log(blob); // Convert response to binary
-    //     const imageUrl = URL.createObjectURL(blob); // Create a URL for the image
-    //     imgElement.style.display = 'block'; // Show image once loaded
-    //     imgElement.src = imageUrl; // Display it in an <img> tag
-    // }
-
-    // //if it's a URL
-    // if (response.ok) {
-    //     const data = await response.text();
-    //     console.log(data)
-    //     //const element = await data.text();
-    //     //console.log(await data.text());
-
-    //     //const section4 = document.getElementById("section4")
-    //     //section4.innerHTML += element;
-    //     imgElement.src = data; // Use URL in an <img> tag
-    //     imgElement.style.display = 'block'; // Show image once loaded
-    // }
-
 });
 
 
