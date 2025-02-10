@@ -53,8 +53,8 @@ app.post('/API1', async (req, res) => {
     //   Sets the response type to PNG
     //   Sends word cloud img
     try {
-        const path = 'https://quickchart.io/wordcloud';
-        const cloud =  await getWordCloud(path,wordcloudInput);
+        const PATH = 'https://quickchart.io/wordcloud';
+        const cloud =  await getWordCloud(PATH,wordcloudInput,{});
         res.set('Content-Type', 'image/png');
         res.send(cloud);
     } catch (err) {
