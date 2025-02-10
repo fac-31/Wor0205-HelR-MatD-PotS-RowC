@@ -4,8 +4,16 @@ document.getElementById('APISForm').addEventListener('submit', async function(ev
     event.preventDefault(); // Prevent page reload
     
     const topic = document.getElementById('inputTopic').value;
+    const backgroundColor = document.getElementById('inputColor').value;
+    const fontFamily = document.getElementById('inputFontFamily').value;
+    const textCase = document.getElementById('inputCase').value;
     // Convert the object to a JSON string
-    const jsonString = JSON.stringify({"topic": topic});
+    const jsonString = JSON.stringify({
+        topic: topic,
+        backgroundColor: backgroundColor,
+        fontFamily: fontFamily,
+        case: textCase
+    });
 
     // // Send the JSON string to the server
     await fetch('/API1', {

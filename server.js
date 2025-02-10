@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { json } from 'express';
 
 import "dotenv/config.js"
 import { getWordCloud } from "./api/wordcloudAPIWrapper.js"
@@ -23,10 +23,11 @@ app.use(express.static('public'));  // This auto-adds public/index.html to the "
 
 app.post('/API1', async (req, res) => {
 
-    const jsonObject = req.body;  // Access fields directly after parsing the JSON body
+    const jsonObject = req.body;
+    const topic = jsonObject['topic'];  // Access fields directly after parsing the JSON body
 
     //1. API1: read webURLs from guardian based on the search string.
-    let resultsFromG = await readFromGuardian(jsonObject);
+    let resultsFromG = await readFromGuardian(topic);
 
     //2. AP2: read articles body based on webURLs
     let wordcloudInput = await readFromArticleExtractor(resultsFromG)
@@ -34,14 +35,22 @@ app.post('/API1', async (req, res) => {
     if (wordcloudInput.length == 0)
     {
         wordcloudInput = "NoneFound";
+
     }
 
     //wordcloudInput = (excludeTopicFromCloud ? wordcloudInput.replace(str,'') : wordcloudInput);
 
+    
+
     //3. read blob from word cloud based on words from API2
     try {
+        const options = {
+            backgroundColor: jsonObject['backgroundColor'],
+            fontFamily: jsonObject['fontFamily'],
+            case: jsonObject['case']
+        }
         const PATH = 'https://quickchart.io/wordcloud';
-        const cloud =  await getWordCloud(PATH,wordcloudInput,{});
+        const cloud =  await getWordCloud(PATH,wordcloudInput,options);
         res.set('Content-Type', 'image/png');
         res.send(cloud);
     } catch (err) {
