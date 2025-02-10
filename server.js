@@ -1,6 +1,7 @@
 import express from 'express';
+
 import "dotenv/config.js"
-import { getWordCloud } from "./api/wordcloud.js"
+import { getWordCloud } from "./api/wordcloudAPIWrapper.js"
 import { readFromGuardian } from "./api/guardianAPIWrapper.js"
 import { readFromArticleExtractor } from './api/articleExtractorWrapper.js'
 const __dirname = import.meta.dirname;
@@ -12,10 +13,10 @@ const PORT = process.env.PORT || 3000;
 // Serve static files from the "public" directory
 app.use(express.static('public'));  // This auto-adds public/index.html to the "/" page
 
-app.get(`/wordcloud`, (req, res) => {
+// app.get(`/wordcloud`, (req, res) => {
 
-    res.sendFile(__dirname + '/public/wordcloud.html');
-})
+//     res.sendFile(__dirname + '/public/wordcloud.html');
+// })
 
 //app.use(require("./server/page.js"));
 //app.use(require("./server/error.js"));
@@ -37,7 +38,7 @@ app.post('/API1', async (req, res) => {
 
     //wordcloudInput = (excludeTopicFromCloud ? wordcloudInput.replace(str,'') : wordcloudInput);
 
-
+    //3. read blob from word cloud based on words from API2
     try {
         const path = 'https://quickchart.io/wordcloud';
         const cloud =  await getWordCloud(path,wordcloudInput);
