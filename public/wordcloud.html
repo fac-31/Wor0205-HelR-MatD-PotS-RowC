@@ -10,10 +10,24 @@
 
 <body>
     <main id="wordcloud">
-        <h1>Amazing Wordcloud Wow!</h1>
+        <section class="content-section">
 
-        <img src="https://quickchart.io/documentation/assets/images/wordcloud-googlenews-ca8f90874f29392a1b33e522aa30e5b6.png">
+            <h1>Amazing Wordcloud Wow!</h1>
+
+            <form id="APISForm">
+                <input type="text" id="topicInput" placeholder="Enter topic" required>
+                <button type="submit">Submit</button>
+
+            </form>
+
+            <!-- Placeholder image element -->
+            <img id="imageElement" src="placeholder.jpg" alt="Image will appear here"
+                style="width:500px; height:500px; margin-top: 25px; margin:auto; display:none;">
+        </section>
     </main>
+    
+
+    <script src="wordcloud.js"></script>
 </body>
 
 </html>
