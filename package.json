@@ -22,6 +22,7 @@
     "@extractus/article-extractor": "^8.0.16",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "openai": "^4.83.0"
   }
 }
