@@ -1,4 +1,4 @@
-export async function getWordCloud(path,input,options) {
+export async function getWordCloud(path, input, options) {
 
     const wordCloudOptions = {
         format: "png",
@@ -14,11 +14,8 @@ export async function getWordCloud(path,input,options) {
     // loop through object
     // wordCloudOption.key = value
     for (const key in options) {
-        //console.log(key + ": " + options[key]);
         wordCloudOptions[key] = options[key];
     }
-
-    console.log(wordCloudOptions);
 
     const response = await fetch(path, {
         method: 'POST',
