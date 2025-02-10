@@ -1,18 +1,31 @@
-export async function getWordCloud(path,input) {
+export async function getWordCloud(path,input,options) {
+
+    const wordCloudOptions = {
+        format: "png",
+        width: 500,
+        height: 500,
+        fontFamily: "sans-serif",
+        fontScale: 15,
+        scale: "linear",
+        removeStopwords: true,
+        text: input
+    }
+
+    // loop through object
+    // wordCloudOption.key = value
+    for (const key in options) {
+        //console.log(key + ": " + options[key]);
+        wordCloudOptions[key] = options[key];
+    }
+
+    console.log(wordCloudOptions);
+
     const response = await fetch(path, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            "format": "png",
-            "width": 500,
-            "height": 500,
-            "fontFamily": "sans-serif",
-            "fontScale": 15,
-            "scale": "linear",
-            "removeStopwords": true,
-            "text": input})
+        body: JSON.stringify(wordCloudOptions)
         }
     )
     
