@@ -1,8 +1,21 @@
+let stringCaches = {};
 
 // Personalised greeting
 document.getElementById('APISForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent page reload
 
+    const imgElement = document.getElementById('imageElement')
+    const searchString = document.getElementById("input-topic").value;
+    if (stringCaches.hasOwnProperty(searchString))
+    {
+
+            const blob = stringCaches[searchString];
+            const url = URL.createObjectURL(blob);
+
+            imgElement.src = url;  // Prefix with appropriate MIME type
+            imgElement.style.opacity = '1'; // Show image once loaded
+            return;
+    }
     const form = document.forms.APISForm;
 
     const json = {};
@@ -26,7 +39,6 @@ document.getElementById('APISForm').addEventListener('submit', async function(ev
         body: JSON.stringify(json) // Send the JSON string directly
     })
         .then(async (res) => {
-            const imgElement = document.getElementById('imageElement')
 
             // Checks to see if response is of the correct MIME type - PNG
             const contentType = res.headers.get('Content-Type');
@@ -42,6 +54,7 @@ document.getElementById('APISForm').addEventListener('submit', async function(ev
 
             imgElement.src = url;  // Prefix with appropriate MIME type
             imgElement.style.opacity = '1'; // Show image once loaded
+            stringCaches[searchString] = blob;
         })
 });
 
