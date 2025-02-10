@@ -2,6 +2,7 @@ import express from 'express';
 import { extract } from '@extractus/article-extractor'
 import "dotenv/config.js"
 import { getWordCloud } from "./api/wordcloud.js"
+import { readFromGuardian } from "./api/guardianAPIWrapper.js"
 const __dirname = import.meta.dirname;
 
 const app = express();
@@ -23,13 +24,7 @@ app.post('/API1', async (req, res) => {
 
     const jsonObject = req.body;  // Access fields directly after parsing the JSON body
 
-    //API1 (Guardian) goes here.
-    // use the parameter topic
-    let str = jsonObject["topic"];
-    let excludeTopicFromCloud = true;
-    let httpStrToGuardian = "https://content.guardianapis.com/search?q=" + str + "&from-date=2014-01-01&api-key=" + process.env.GUARDIAN_API_KEY;
-    const responseFromGuardian = await fetch(httpStrToGuardian);
-    let resultsFromG = await responseFromGuardian.json();
+    let resultsFromG = await readFromGuardian(jsonObject);
 
     // Article-Extractor pulls text from the top 10 articles urls
     //   Uses regex to remove html tags
@@ -38,13 +33,22 @@ app.post('/API1', async (req, res) => {
         async (acc, curr) => {
             const webUrl = curr.webUrl;
             const articleWithTags = await extract(webUrl);
-            const regex = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g;
-            const articleText = articleWithTags.content.replace(regex,'');
+            let articleText = "";
+            if (articleWithTags != null)
+            {
+                const regex = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g;
+                articleText = articleWithTags.content.replace(regex,'');
+            }
             return await acc + articleText;
-        },''
+        }
     )
+    
+    if (wordcloudInput.length == 0)
+    {
+        wordcloudInput = "NoneFound";
+    }
 
-    wordcloudInput = (excludeTopicFromCloud ? wordcloudInput.replace(str,'') : wordcloudInput);
+    //wordcloudInput = (excludeTopicFromCloud ? wordcloudInput.replace(str,'') : wordcloudInput);
 
 
     // Third API - Quick Charts Word Cloud API
@@ -66,3 +70,5 @@ app.post('/API1', async (req, res) => {
 app.listen(PORT, () => {
 	console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+
