@@ -32,6 +32,8 @@ document.getElementById('APISForm').addEventListener('submit', async function(ev
             json[key] = input.value;
     }
 
+    console.log(json.topic);
+
     // Send the JSON string to the server
     await fetch('/API1', {
         method: 'POST',
@@ -56,5 +58,20 @@ document.getElementById('APISForm').addEventListener('submit', async function(ev
             imgElement.style.opacity = '1'; // Show image once loaded
             stringCaches[searchString] = blob;
         })
+
+    console.log(json.topic + " again");
+    
+    await fetch('/poem', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(json) // Send the JSON string directly
+    })
+        .then((res) => res.text())
+        .then((text) => {
+            const poemTitle = document.getElementById('poem-title');
+            const poemText = document.getElementById('poem-text');
+            poemTitle.innerText = json.topic + " poem";
+            poemText.innerText = text;
+        });
 });
 
