@@ -3,7 +3,7 @@
 document.getElementById('APISForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent page reload
     
-    const topic = document.getElementById('topicInput').value;
+    const topic = document.getElementById('inputTopic').value;
     // Convert the object to a JSON string
     const jsonString = JSON.stringify({"topic": topic});
 
@@ -29,7 +29,7 @@ document.getElementById('APISForm').addEventListener('submit', async function(ev
             const url = URL.createObjectURL(blob);
 
             imgElement.src = url;  // Prefix with appropriate MIME type
-            imgElement.style.display = 'block'; // Show image once loaded
+            imgElement.style.opacity = '1'; // Show image once loaded
         })
 });
 
