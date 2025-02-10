@@ -5,55 +5,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Web Project</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles.css">
 </head>
 
 <body>
-    <header>
-        <h1>Welcome to the Interactive Web Project</h1>
-        <nav>
-            <ul>
-                <li><a href="#section1" id="link-section1">Section 1</a></li>
-                <li><a href="#section2" id="link-section2">Section 2</a></li>
-                <li><a href="#section3" id="link-section3">Section 3</a></li>
-                <li><a href="#section4" id="link-section4">Section 4</a></li>
-            </ul>
-        </nav>
-    </header>
+    <main id="wordcloud">
+        <section class="content-section">
 
-    <main>
-        <section id="section1" class="content-section">
-            <h2>Section 1: Introduction</h2>
-            <p>This section contains an introduction to the project.</p>
-            <button id="btn-toggle1">Toggle Info</button>
-            <div class="hidden-info">Here is some hidden information.</div>
-        </section>
+            <h1>Amazing Wordcloud Wow!</h1>
 
-        <section id="section2" class="content-section">
-            <h2>Section 2: Interactive Area</h2>
-            <p>Try interacting with the elements below.</p>
-            <button id="btn-change-color">Change Background Color</button>
-            <div id="color-box">Watch me change!</div>
-        </section>
+            <form id="APISForm">
+                <input type="text" id="inputTopic" style="grid-column: 1 / -1;" placeholder="Enter topic" required>
 
-        <section id="section3" class="content-section">
-            <h2>Section 3: Form Section</h2>
-            <form id="feedback-form">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name">
+                <label for="inputColor">Background Color</label>
+                <input type="color" id="inputColor" style="padding: 1px; width: 100%">
 
-                <label for="feedback">Feedback:</label>
-                <textarea id="feedback" name="feedback"></textarea>
+                <label for="inputFontFamily">Font Family</label>
+                <select name="font family" id="inputFontFamily">
+                    <option value="sans-serif">sans-serif</option>
+                    <option value="sans">sans</option>
+                    <option value="monospace">monospace</option>
+                </select>
 
-                <button type="submit">Submit</button>
+                <label for="inputCase">Case</label>
+                <select name="case" id="inputCase">
+                    <option value="none">None</option>
+                    <option value="upper">Uppercase</option>
+                    <option value="lower">Lowercase</option>
+                </select>
+
+                <button type="submit" style="grid-column: 1 / -1;">Submit</button>
             </form>
-            <div id="form-response"></div>
+        </section>
+
+        <section class="content-section">
+            <!-- Placeholder image element -->
+            <img id="imageElement" src="placeholder.jpg" alt="Image will appear here"
+                style="width: 500px; height: 500px; opacity: 0;">
         </section>
     </main>
-
-    <footer>
-        <p>Project created for JavaScript and DOM manipulation practice.</p>
-    </footer>
+    
 
     <script src="script.js"></script>
 </body>
