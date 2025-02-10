@@ -35,7 +35,7 @@ const formSection = document.getElementById("section3")
 let overlay = document.createElement("div");
 overlay.id = "overlay";
 
-document.addEventListener("DOMContentLoaded", function(){
+/*document.addEventListener("DOMContentLoaded", function(){
    
 
     formSection.style.position = "fixed";
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function(){
     overlay.style.background = "rgba(0, 0, 0, 0.5)";
     overlay.style.zIndex = "999"; 
     document.body.appendChild(overlay);
-})
+})*/
 
 let errorMessage = document.createElement('p')
 errorMessage.style.color = 'red'
@@ -68,35 +68,68 @@ form.appendChild(errorMessage)
 
 
 
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
+// form.addEventListener('submit', (event) => {
+//     event.preventDefault();
   
-    overlay.style.display = "none"
-    const formName = document.getElementById('name').value.trim();
+//     overlay.style.display = "none"
+//     const formName = document.getElementById('name').value.trim();
    
-    const feedback = document.getElementById('feedback').value.trim();
-    if (formName === "" || feedback === "") {
-        errorMessage.textContent = "Please fill out all fields before submitting.";
-        return; 
-    }
+//     const feedback = document.getElementById('feedback').value.trim();
+//     if (formName === "" || feedback === "") {
+//         errorMessage.textContent = "Please fill out all fields before submitting.";
+//         return; 
+//     }
 
-      formSection.style.display = "none"
+//       formSection.style.display = "none"
     
-    name = formName;
-    if (name) {
-        const section1Heading = document.querySelector("#section1 h2");
-        section1Heading.textContent = `Welcome, ${name}`;
-    }
-    formResponse.textContent = `Thank you, ${name}, for your feedback: "${feedback}"`;
+//     name = formName;
+//     if (name) {
+//         const section1Heading = document.querySelector("#section1 h2");
+//         section1Heading.textContent = `Welcome, ${name}`;
+//     }
+//     formResponse.textContent = `Thank you, ${name}, for your feedback: "${feedback}"`;
   
 
    
-    form.reset();
-    errorMessage.textContent = ""
-});
+//     form.reset();
+//     errorMessage.textContent = ""
+// });
+
+
 
 // Personalised greeting
+document.getElementById('APISForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent page reload
+    
+    const topic = document.getElementById('topicInput').value;
+    // Convert the object to a JSON string
+    const jsonString = JSON.stringify({"topic": topic});
 
+    // // Send the JSON string to the server
+    await fetch('/API1', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: jsonString // Send the JSON string directly
+    })
+        .then(async (res) => {
+            const imgElement = document.getElementById('imageElement')
+
+            // Checks to see if response is of the correct MIME type - PNG
+            const contentType = res.headers.get('Content-Type');
+            if (!contentType || !contentType.includes('image/png')) {
+                throw new Error('The server did not return a PNG image');
+            }
+
+            // Creates a blob from the response buffer
+            //   Gets the url for the blob
+            const buffer = await res.arrayBuffer();
+            const blob = new Blob([buffer], { type: 'image/png' });
+            const url = URL.createObjectURL(blob);
+
+            imgElement.src = url;  // Prefix with appropriate MIME type
+            imgElement.style.display = 'block'; // Show image once loaded
+        })
+});
 
 
   

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Node and Express workshop group",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +19,9 @@
   },
   "homepage": "https://github.com/fac-31/Wor0205-HelR-MatD-PotS-RowC#readme",
   "dependencies": {
-    "express": "^4.21.2"
+    "@extractus/article-extractor": "^8.0.16",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
   }
 }
