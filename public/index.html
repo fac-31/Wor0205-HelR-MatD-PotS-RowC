@@ -15,14 +15,33 @@
             <h1>Amazing Wordcloud Wow!</h1>
 
             <form id="APISForm">
-                <input type="text" id="topicInput" placeholder="Enter topic" required>
-                <button type="submit">Submit</button>
+                <input type="text" id="inputTopic" style="grid-column: 1 / -1;" placeholder="Enter topic" required>
 
+                <label for="inputColor">Background Color</label>
+                <input type="color" id="inputColor" style="padding: 1px; width: 100%">
+
+                <label for="inputFontFamily">Font Family</label>
+                <select name="font family" id="inputFontFamily">
+                    <option value="sans-serif">sans-serif</option>
+                    <option value="sans">sans</option>
+                    <option value="monospace">monospace</option>
+                </select>
+
+                <label for="inputCase">Case</label>
+                <select name="case" id="inputCase">
+                    <option value="none">None</option>
+                    <option value="upper">Uppercase</option>
+                    <option value="lower">Lowercase</option>
+                </select>
+
+                <button type="submit" style="grid-column: 1 / -1;">Submit</button>
             </form>
+        </section>
 
+        <section class="content-section">
             <!-- Placeholder image element -->
             <img id="imageElement" src="placeholder.jpg" alt="Image will appear here"
-                style="width:500px; height:500px; margin-top: 25px; margin:auto; display:none;">
+                style="width: 500px; height: 500px; opacity: 0;">
         </section>
     </main>
     
