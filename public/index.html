@@ -15,24 +15,55 @@
             <h1>Amazing Wordcloud Wow!</h1>
 
             <form id="APISForm">
-                <input type="text" id="inputTopic" style="grid-column: 1 / -1;" placeholder="Enter topic" required>
+                <input type="text" id="input-topic" style="grid-column: 1 / -1;" placeholder="Enter topic" required>
 
-                <label for="inputColor">Background Color</label>
-                <input type="color" id="inputColor" value="#ffffff" style="padding: 1px; width: 100%">
+                <label for="input-backgroundColor">Background Color</label>
+                <input type="color" id="input-backgroundColor" value="#ffffff" style="padding: 1px; width: 100%">
 
-                <label for="inputFontFamily">Font Family</label>
-                <select name="font family" id="inputFontFamily">
+                <label for="input-scale">Scale</label>
+                <select name="font family" id="input-scale">
+                    <option value="linear">Linear</option>
+                    <option value="sqrt">Square Root</option>
+                    <option value="log">Log</option>
+                </select>
+
+                <label for="input-fontFamily">Font Family</label>
+                <select name="font family" id="input-fontFamily">
                     <option value="sans-serif">sans-serif</option>
                     <option value="sans">sans</option>
                     <option value="monospace">monospace</option>
                 </select>
 
-                <label for="inputCase">Case</label>
-                <select name="case" id="inputCase">
+                <label for="input-fontWeight">Font Weight</label>
+                <select name="font family" id="input-fontWeight">
+                    <option value="normal">Normal</option>
+                    <option value="bold">Bold</option>
+                    <option value="bolder">Bolder</option>
+                </select>
+
+                <label for="input-fontScale">Font Scale</label>
+                <input type="range" id="input-fontScale" name="font scale" min="1" max="80" value="10">
+
+                <label for="input-padding">Padding</label>
+                <input type="range" id="input-padding" name="padding" min="0" max="30" value="0">
+
+                <label for="input-rotation">Rotation</label>
+                <input type="range" id="input-rotation" name="padding" min="0" max="180" value="20">
+
+                <label for="input-case">Case</label>
+                <select name="case" id="input-case">
                     <option value="none">None</option>
                     <option value="upper">Uppercase</option>
                     <option value="lower">Lowercase</option>
                 </select>
+                
+                <!--
+                <label for="input-removeStopwords">Remove Stopwords</label>
+                <input type="checkbox" id="input-removeStopwords" name="remove stopwords" checked>
+                
+                <label for="input-cleanWords">Clean Words</label>
+                <input type="checkbox" id="input-cleanWords" name="clean words" checked>
+                -->
 
                 <button type="submit" style="grid-column: 1 / -1;">Submit</button>
             </form>

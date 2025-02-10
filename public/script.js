@@ -2,24 +2,28 @@
 // Personalised greeting
 document.getElementById('APISForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent page reload
-    
-    const topic = document.getElementById('inputTopic').value;
-    const backgroundColor = document.getElementById('inputColor').value;
-    const fontFamily = document.getElementById('inputFontFamily').value;
-    const textCase = document.getElementById('inputCase').value;
-    // Convert the object to a JSON string
-    const jsonString = JSON.stringify({
-        topic: topic,
-        backgroundColor: backgroundColor,
-        fontFamily: fontFamily,
-        case: textCase
-    });
 
-    // // Send the JSON string to the server
+    const form = document.forms.APISForm;
+
+    const json = {};
+
+    // Loop through each of the inputs to set key and values
+    const inputs = form.querySelectorAll("[id*='input-']");
+    for (let i = 0; i < inputs.length; i++) {
+        const input = inputs[i];
+        const key = input.getAttribute("id").replace("input-", "");
+        
+        if (input.getAttribute("type") == "checkbox")
+            json[key] = input.checked ? "true" : "false";
+        else
+            json[key] = input.value;
+    }
+
+    // Send the JSON string to the server
     await fetch('/API1', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: jsonString // Send the JSON string directly
+        body: JSON.stringify(json) // Send the JSON string directly
     })
         .then(async (res) => {
             const imgElement = document.getElementById('imageElement')
