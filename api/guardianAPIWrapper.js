@@ -7,7 +7,7 @@
 //     return resultsFromG;
 // }
 
-export async function readFromGuardian({ topic }) {
+export async function readFromGuardian(topic) {
   try {
     const params = new URLSearchParams({
       q: topic,
@@ -26,6 +26,5 @@ export async function readFromGuardian({ topic }) {
     return await response.json()
   } catch (error) {
     console.error('Guardian API error:', error)
-    throw error
   }
 }
