@@ -94,7 +94,6 @@ input, textarea {
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: var(--border-radius);
-    width: 100%;
 }
 
 footer {
@@ -109,6 +108,9 @@ footer {
     height: 100vh;
     align-content: center;
     text-align: center;
+
+    display: flex;
+    flex-wrap: wrap;
 }
 
 #wordcloud img {
@@ -118,4 +120,20 @@ footer {
     border: 0.5vw solid black;
     background-color: lightgray;
     box-shadow: 0 0 40px black;
+}
+
+#wordcloud form {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-gap: 5px;
+
+    justify-content: center;
+}
+
+#wordcloud form label {
+    text-align:right;
+}
+
+#wordcloud form label:after {
+    content: ":";
 }
