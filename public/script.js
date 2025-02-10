@@ -102,40 +102,33 @@ document.getElementById('APISForm').addEventListener('submit', async function(ev
     event.preventDefault(); // Prevent page reload
     
     const topic = document.getElementById('topicInput').value;
-console.log("before looking at topic");
-console.log(topic);
     // Convert the object to a JSON string
-    const jsonString = JSON.stringify({ "topic": topic});
-    console.log(`Topic is ${jsonString}`);
+    const jsonString = JSON.stringify({"topic": topic});
 
     // // Send the JSON string to the server
-    const response = await fetch('http://localhost:3000/API1', {
+    await fetch('/API1', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: jsonString // Send the JSON string directly
-    });
+    })
+        .then(async (res) => {
+            const imgElement = document.getElementById('imageElement')
 
-    console.log("boom");
+            // Checks to see if response is of the correct MIME type - PNG
+            const contentType = res.headers.get('Content-Type');
+            if (!contentType || !contentType.includes('image/png')) {
+                throw new Error('The server did not return a PNG image');
+            }
 
-    const imgElement = document.getElementById('imageElement')
-    // //if it's an image
-    // if (response.ok) {
-    //     console.log(response);
-    //     let blob  = response.blob;
-    //     //const blob = await response.blob();
-    //     console.log(blob); // Convert response to binary
-    //     const imageUrl = URL.createObjectURL(blob); // Create a URL for the image
-    //     imgElement.style.display = 'block'; // Show image once loaded
-    //     imgElement.src = imageUrl; // Display it in an <img> tag
-    // }
+            // Creates a blob from the response buffer
+            //   Gets the url for the blob
+            const buffer = await res.arrayBuffer();
+            const blob = new Blob([buffer], { type: 'image/png' });
+            const url = URL.createObjectURL(blob);
 
-    // //if it's a URL
-    if (response.ok) {
-        const data = response;
-        console.log(data); // Parse JSON response
-        imgElement.src = data.imageUrl; // Use URL in an <img> tag
-        imgElement.style.display = 'block'; // Show image once loaded
-    }
+            imgElement.src = url;  // Prefix with appropriate MIME type
+            imgElement.style.display = 'block'; // Show image once loaded
+        })
 });
 
 

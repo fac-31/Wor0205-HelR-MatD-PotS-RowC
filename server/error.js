@@ -3,7 +3,10 @@ const router = express.Router();
 const path = require("path");
 
 router.get('/*',(req, res, next) => {
-    res.sendFile(path.join(__dirname, '..', '/not_found/error.html'));
+    fetch('https://jsonplaceholder.typicode.com/users')
+        .then((response) => response.json())
+        .then((json) => res.send(JSON.stringify(json)));
+
 })
 
 module.exports = router;

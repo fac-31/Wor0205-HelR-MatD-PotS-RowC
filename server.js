@@ -2,10 +2,11 @@ import express from 'express';
 import { extract } from '@extractus/article-extractor'
 import "dotenv/config.js"
 import { getWordCloud } from "./api/wordcloud.js"
-const app = express();
-app.use(express.json()); // Middleware to parse JSON bodie
-const PORT = process.env.PORT || 3000;
+const __dirname = import.meta.dirname;
 
+const app = express();
+app.use(express.json()); // Middleware to parse JSON bodies
+const PORT = process.env.PORT || 3000;
 
 function function1(id, reps)
 {
@@ -25,64 +26,51 @@ app.get(`/function1/:id/:reps`, (req, res) => {
 
 // Serve static files from the "public" directory
 app.use(express.static('public'));  // This auto-adds public/index.html to the "/" page
+
 //app.use(require("./server/page.js"));
 //app.use(require("./server/error.js"));
 
- app.post('/API1', async (req, res) => {
-    //console.log(res);
+app.post('/API1', async (req, res) => {
+
     const jsonObject = req.body;  // Access fields directly after parsing the JSON body
 
-    //console.log(typeof(jsonObject));
-
-
-    //console.log(`requested receive with Topic ${jsonObject}`);
-    //API1 goes here.
-    //use the parameter topic
-
+    //API1 (Guardian) goes here.
+    // use the parameter topic
     let str = jsonObject["topic"];
+    let excludeTopicFromCloud = true;
     let httpStrToGuardian = "https://content.guardianapis.com/search?q=" + str + "&from-date=2014-01-01&api-key=" + process.env.GUARDIAN_API_KEY;
-
-    //console.log(httpStrToGuardian);
     const responseFromGuardian = await fetch(httpStrToGuardian);
-
-    let urlForAPi2 = responseFromGuardian;
-    //console.log(urlForAPi2);
-
-
     let resultsFromG = await responseFromGuardian.json();
 
-    // THIS IS WHAT WE WANT
-    let article;
-    const url = resultsFromG.response.results[0].webUrl;
-    //console.log(resultsFromG.response.results[0].webUrl);
+    // Article-Extractor pulls text from the top 10 articles urls
+    //   Uses regex to remove html tags
+    //   reduce() function concatenates the texts together
+    let wordcloudInput = await resultsFromG.response.results.reduce(
+        async (acc, curr) => {
+            const webUrl = curr.webUrl;
+            const articleWithTags = await extract(webUrl);
+            const regex = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g;
+            const articleText = articleWithTags.content.replace(regex,'');
+            return await acc + articleText;
+        },''
+    )
 
+    wordcloudInput = (excludeTopicFromCloud ? wordcloudInput.replace(str,'') : wordcloudInput);
+
+
+    // Third API - Quick Charts Word Cloud API
+    //   Takes the concatenated text of all 10 articles as its input
+    //   Calls the getWordCloud function in api/wordcloud.js
+    //   Sets the response type to PNG
+    //   Sends word cloud img
     try {
-        article = await extract(url)
-      } catch (err) {
+        const path = 'https://quickchart.io/wordcloud';
+        const cloud =  await getWordCloud(path,wordcloudInput);
+        res.set('Content-Type', 'image/png');
+        res.send(cloud);
+    } catch (err) {
         console.error(err)
-      }
-
-    //console.log(article);
-
-    
-
-    //API2 goes here.
-    //use the output of API1
-    const path = 'https://quickchart.io/wordcloud';
-    const cloudResponse = await getWordCloud(path,article);
-    //console.log(URL.createObjectURL(blob));
-    const cloudUrl = URL.createObjectURL(cloudResponse);
-    //console.log(URL.createObjectURL(blob))
-    res.send(cloudUrl)
-
-
-
-
-    //result of API2 goes here
-    //return to client
-
-    // Return a confirmation message with the list of all people
-    //res.json({ message: `Topic ${topic}` });
+    }
 });
 
 // Start the server
