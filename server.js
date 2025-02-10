@@ -68,6 +68,7 @@ app.post('/API1', async (req, res) => {
 
     const jsonObject = req.body;
     const topic = jsonObject['topic'];  // Access fields directly after parsing the JSON body
+    delete jsonObject['topic']; // Remove uneeded key topic
 
     //1. API1: read webURLs from guardian based on the search string.
     let resultsFromG = await readFromGuardian(topic);
@@ -87,13 +88,8 @@ app.post('/API1', async (req, res) => {
 
     //3. read blob from word cloud based on words from API2
     try {
-        const options = {
-            backgroundColor: jsonObject['backgroundColor'],
-            fontFamily: jsonObject['fontFamily'],
-            case: jsonObject['case']
-        }
         const PATH = 'https://quickchart.io/wordcloud';
-        const cloud =  await getWordCloud(PATH,wordcloudInput,options);
+        const cloud =  await getWordCloud(PATH, wordcloudInput, jsonObject);
         res.set('Content-Type', 'image/png');
         res.send(cloud);
     } catch (err) {
